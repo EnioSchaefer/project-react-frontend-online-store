@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Home extends Component {
   constructor() {
@@ -15,6 +16,13 @@ export default class Home extends Component {
     this.setState({
       [name]: value,
     });
+  };
+
+  handleClick = () => {
+    const { history } = this.props;
+    const historyFix = history;
+
+    historyFix.push('/shoppingcart');
   };
 
   render() {
@@ -38,7 +46,19 @@ export default class Home extends Component {
               Digite algum termo de pesquisa ou escolha uma categoria.
             </p>
           )}
+
+        <button
+          type="button"
+          onClick={ this.handleClick }
+          data-testid="shopping-cart-button"
+        >
+          Carrinho de Compras
+        </button>
       </>
     );
   }
 }
+
+Home.propTypes = {
+  history: PropTypes.shape({}).isRequired,
+};
