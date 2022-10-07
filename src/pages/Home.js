@@ -28,6 +28,7 @@ export default class Home extends Component {
     historyFix.push('/shoppingcart');
   };
 
+  // Responsavel por realizar acoes do botao de pesquisa
   buttonSearch = async () => {
     const { searchInput } = this.state;
     const response = await getProductsFromCategoryAndQuery(null, searchInput);
