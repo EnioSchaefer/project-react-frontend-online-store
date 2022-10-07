@@ -1,8 +1,4 @@
 const endPoint = 'https://api.mercadolibre.com/sites/MLB/categories';
-//const query = `https://api.mercadolibre.com/sites/MLB/search?q=${QUERY}`;
-//const category = `https://api.mercadolibre.com/sites/MLB/search?category=${CATEGORY_ID}`;
-//const queryCategory = `https://api.mercadolibre.com/sites/MLB/search?category=${CATEGORY_ID}&q=${QUERY}`;
-
 
 export async function getCategories() {
   const request = await fetch(endPoint);
