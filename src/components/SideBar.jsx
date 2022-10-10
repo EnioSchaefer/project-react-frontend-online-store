@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { getCategories } from '../services/api';
 
 class SideBar extends React.Component {
@@ -20,7 +21,13 @@ class SideBar extends React.Component {
       <aside>
         { categoriesList.map((item, index) => (
           <div key={ index }>
-            <button type="button" data-testid="category">{item.name}</button>
+            <NavLink
+              data-testid="category"
+              to={ `/categories/${item.id}` }
+              value={ item.id }
+            >
+              {item.name}
+            </NavLink>
           </div>
         ))}
       </aside>
