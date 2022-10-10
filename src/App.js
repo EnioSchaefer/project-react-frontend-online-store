@@ -8,7 +8,6 @@ import ShoppingCart from './pages/ShoppingCart';
 function App() {
   return (
     <BrowserRouter>
-      <Route exact path="/" component={ Home } />
       <SideBar />
       <Route exact path="/" render={ (props) => <Home { ...props } /> } />
       <Route exact path="/shoppingcart" component={ ShoppingCart } />
