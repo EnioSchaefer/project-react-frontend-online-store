@@ -12,19 +12,30 @@ export default class ShoppingCart extends Component {
 
   componentDidMount() {
     const localData = JSON.parse(localStorage.getItem('products'));
-    const arr = [];
 
-    localData.forEach(async (id) => {
-      const response = await getProductById(id);
-      arr.push(response);
-    });
-    this.setState({ cartObjects: arr });
+    if (localData) {
+      const filteredData = localData
+        .filter((id, index) => localData.indexOf(id) === index);
+      filteredData.forEach(async (id) => {
+        const response = await getProductById(id);
+        this.setState((prevState) => ({
+          cartObjects: [...prevState.cartObjects, response] }));
+      });
+    }
+    this.setState({ totalCart: localData });
   }
 
+  getOccurrence = (array, value) => {
+    let count = 0;
+    array.forEach((v) => {
+      if (v === value) count += 1;
+    });
+    return count;
+  };
+
   render() {
-    const { cartObjects } = this.state;
-    console.log(cartObjects);
-    if (cartObjects.length > 0) {
+    const { cartObjects, totalCart } = this.state;
+    if (!cartObjects) {
       return <h3 data-testid="shopping-cart-empty-message">Seu carrinho está vazio</h3>;
     }
     return (
@@ -33,7 +44,9 @@ export default class ShoppingCart extends Component {
           <span key={ index }>
             <img src={ obj.thumbnail } alt={ obj.title } />
             <p data-testid="shopping-cart-product-name">{obj.title}</p>
-            <p data-testid="shopping-cart-product-quantity">01</p>
+            <p data-testid="shopping-cart-product-quantity">
+              {this.getOccurrence(totalCart, obj.id)}
+            </p>
           </span>
         ))}
       </>

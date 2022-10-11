@@ -30,11 +30,7 @@ class Categories extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    this.setState({ categories: [] });
-  }
-
-  addToCart = async (event) => {
+  addToCart = (event) => {
     const id = event.target.value;
     const localData = JSON.parse(localStorage.getItem('products'));
     if (!localData) {
