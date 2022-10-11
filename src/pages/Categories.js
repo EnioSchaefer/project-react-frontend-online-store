@@ -40,15 +40,25 @@ class Categories extends React.Component {
     }
   };
 
+  handleClick = (event) => {
+    const value = event.target.getAttribute('value');
+
+    const { history } = this.props;
+    history.push(`/product/${value}`);
+  };
+
   render() {
     const { categories } = this.state;
     return (
       <>
         {categories.map((obj, index) => (
-          <span key={ index } data-testid="product">
-            <p>{obj.title}</p>
-            <img src={ obj.thumbnail } alt={ obj.title } />
-            <p>{`${obj.price}${obj.currency}`}</p>
+          <div
+            data-testid="product"
+            key={ index }
+          >
+            <p className={ obj.id }>{obj.title}</p>
+            <img value={ obj.id } src={ obj.thumbnail } alt={ obj.title } />
+            <p value={ obj.id }>{`${obj.price}`}</p>
             <button
               type="button"
               data-testid="product-add-to-cart"
@@ -57,7 +67,15 @@ class Categories extends React.Component {
             >
               Adicionar ao Carrinho
             </button>
-          </span>
+            <button
+              data-testid="product-detail-link"
+              onClick={ this.handleClick }
+              type="button"
+              value={ obj.id }
+            >
+              Detalhes
+            </button>
+          </div>
         ))}
       </>
     );
@@ -67,4 +85,5 @@ class Categories extends React.Component {
 export default Categories;
 Categories.propTypes = {
   match: PropTypes.shape.isRequired,
+  history: PropTypes.shape.isRequired,
 };
