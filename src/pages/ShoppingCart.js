@@ -35,7 +35,7 @@ export default class ShoppingCart extends Component {
 
   render() {
     const { cartObjects, totalCart } = this.state;
-    if (!cartObjects) {
+    if (!totalCart) {
       return <h3 data-testid="shopping-cart-empty-message">Seu carrinho está vazio</h3>;
     }
     return (
