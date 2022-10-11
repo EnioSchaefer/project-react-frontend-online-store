@@ -30,9 +30,15 @@ class Categories extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    this.setState({ categories: [] });
-  }
+  addToCart = (event) => {
+    const id = event.target.value;
+    const localData = JSON.parse(localStorage.getItem('products'));
+    if (!localData) {
+      localStorage.setItem('products', JSON.stringify([id]));
+    } else {
+      localStorage.setItem('products', JSON.stringify([...localData, id]));
+    }
+  };
 
   handleClick = (event) => {
     const value = event.target.getAttribute('value');
@@ -53,6 +59,14 @@ class Categories extends React.Component {
             <p className={ obj.id }>{obj.title}</p>
             <img value={ obj.id } src={ obj.thumbnail } alt={ obj.title } />
             <p value={ obj.id }>{`${obj.price}`}</p>
+            <button
+              type="button"
+              data-testid="product-add-to-cart"
+              value={ obj.id }
+              onClick={ this.addToCart }
+            >
+              Adicionar ao Carrinho
+            </button>
             <button
               data-testid="product-detail-link"
               onClick={ this.handleClick }
