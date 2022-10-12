@@ -21,13 +21,6 @@ export default class Home extends Component {
     });
   };
 
-  handleClick = () => {
-    const { history } = this.props;
-    const historyFix = history;
-
-    historyFix.push('/shoppingcart');
-  };
-
   // Responsavel por realizar acoes do botao de pesquisa
   buttonSearch = async () => {
     const { searchInput } = this.state;
@@ -47,6 +40,37 @@ export default class Home extends Component {
     this.setState({
       searchResult: objResults,
     });
+  };
+
+  handleClick = (event) => {
+    const value = event.target.getAttribute('value');
+
+    const { history } = this.props;
+    const historyFix = history;
+    historyFix.push(`/product/${value}`);
+  };
+
+  addToCart = (item) => {
+    const localData = JSON.parse(localStorage.getItem('products'));
+    if (!localData) {
+      const itemWithQuantity = {
+        ...item,
+        quantity: 1,
+      };
+      localStorage.setItem('products', JSON.stringify([itemWithQuantity]));
+    } else if (localData.find((obj) => obj.id === item.id)) {
+      const find = localData.find((obj) => obj.id === item.id);
+      const index = localData.indexOf(find);
+      find.quantity += 1;
+      localData[index] = find;
+      localStorage.setItem('products', JSON.stringify(localData));
+    } else {
+      const itemWithQuantity = {
+        ...item,
+        quantity: 1,
+      };
+      localStorage.setItem('products', JSON.stringify([...localData, itemWithQuantity]));
+    }
   };
 
   render() {
@@ -79,14 +103,6 @@ export default class Home extends Component {
             </p>
           )}
 
-        <button
-          type="button"
-          onClick={ this.handleClick }
-          data-testid="shopping-cart-button"
-        >
-          Carrinho de Compras
-        </button>
-
         {foundResult && <p>Nenhum produto foi encontrado</p>}
         <div>
           {searchResult.map((obj, index) => (
@@ -94,6 +110,21 @@ export default class Home extends Component {
               <p>{obj.title}</p>
               <img src={ obj.thumbnail } alt={ obj.title } />
               <p>{ `${obj.price}${obj.currency}` }</p>
+              <button
+                type="button"
+                data-testid="product-add-to-cart"
+                onClick={ () => this.addToCart(obj) }
+              >
+                Adicionar ao Carrinho
+              </button>
+              <button
+                data-testid="product-detail-link"
+                onClick={ this.handleClick }
+                type="button"
+                value={ obj.id }
+              >
+                Detalhes
+              </button>
             </span>
           ))}
         </div>

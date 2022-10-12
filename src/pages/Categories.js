@@ -6,37 +6,45 @@ class Categories extends React.Component {
   constructor() {
     super();
     this.state = {
-      categories: [],
-      categoriesUpdated: '',
+      products: [],
     };
   }
 
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const response = await getProductsFromCategoryAndQuery(id, null);
-    this.setState({ categories: response.results });
-    this.setState({ categoriesUpdated: id });
+    console.log(response);
+    this.setState({ products: response.results });
   }
 
-  async componentDidUpdate() {
-    const { match: { params: { id } } } = this.props;
-    // const { id } = match.params;
-    // const newId = id;
-    const { categoriesUpdated } = this.state;
-    const response = await getProductsFromCategoryAndQuery(id, null);
-    if (id !== categoriesUpdated) {
-      this.setState({ categories: response.results });
-      this.setState({ categoriesUpdated: id });
-    }
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   const { location: { pathname } } = this.props;
+  //   let checkUpdate = true;
+  //   if (pathname !== nextProps.location.pathname) checkUpdate = true;
+  //   console.log(checkUpdate);
+  //   return checkUpdate;
+  // }
 
-  addToCart = (event) => {
-    const id = event.target.value;
+  addToCart = (item) => {
     const localData = JSON.parse(localStorage.getItem('products'));
     if (!localData) {
-      localStorage.setItem('products', JSON.stringify([id]));
+      const itemWithQuantity = {
+        ...item,
+        quantity: 1,
+      };
+      localStorage.setItem('products', JSON.stringify([itemWithQuantity]));
+    } else if (localData.find((obj) => obj.id === item.id)) {
+      const find = localData.find((obj) => obj.id === item.id);
+      const index = localData.indexOf(find);
+      find.quantity += 1;
+      localData[index] = find;
+      localStorage.setItem('products', JSON.stringify(localData));
     } else {
-      localStorage.setItem('products', JSON.stringify([...localData, id]));
+      const itemWithQuantity = {
+        ...item,
+        quantity: 1,
+      };
+      localStorage.setItem('products', JSON.stringify([...localData, itemWithQuantity]));
     }
   };
 
@@ -48,10 +56,11 @@ class Categories extends React.Component {
   };
 
   render() {
-    const { categories } = this.state;
+    const { products } = this.state;
+
     return (
       <>
-        {categories.map((obj, index) => (
+        {products.map((obj, index) => (
           <div
             data-testid="product"
             key={ index }
@@ -62,8 +71,7 @@ class Categories extends React.Component {
             <button
               type="button"
               data-testid="product-add-to-cart"
-              value={ obj.id }
-              onClick={ this.addToCart }
+              onClick={ () => this.addToCart(obj) }
             >
               Adicionar ao Carrinho
             </button>
@@ -86,4 +94,5 @@ export default Categories;
 Categories.propTypes = {
   match: PropTypes.shape.isRequired,
   history: PropTypes.shape.isRequired,
+  location: PropTypes.shape({ pathname: PropTypes.string.isRequired }).isRequired,
 };
