@@ -30,7 +30,6 @@ export default class Product extends Component {
     const { email: email2, texto, avaliation } = this.state;
     const local = JSON.parse(localStorage.getItem(id));
     const regex = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/;
-    console.log(avaliation);
     if (!regex.test(email2) || !avaliation) {
       this.setState({ invalid: true });
     } else if (!local) {
