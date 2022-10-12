@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { getCategories } from '../services/api';
 
 class SideBar extends React.Component {
@@ -30,6 +30,12 @@ class SideBar extends React.Component {
             </NavLink>
           </div>
         ))}
+        <Link
+          data-testid="shopping-cart-button"
+          to="/shoppingcart"
+        >
+          Carrinho de Compras
+        </Link>
       </aside>
     );
   }
