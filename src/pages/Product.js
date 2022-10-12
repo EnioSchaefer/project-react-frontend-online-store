@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { getProductById } from '../services/api';
 
 export default class Product extends Component {
@@ -18,6 +18,16 @@ export default class Product extends Component {
   handleClick = () => {
     const { history } = this.props;
     history.push('/shoppingcart');
+  };
+
+  addToCart = () => {
+    const { match: { params: { id } } } = this.props;
+    const localData = JSON.parse(localStorage.getItem('products'));
+    if (!localData) {
+      localStorage.setItem('products', JSON.stringify([id]));
+    } else {
+      localStorage.setItem('products', JSON.stringify([...localData, id]));
+    }
   };
 
   render() {
@@ -45,8 +55,14 @@ export default class Product extends Component {
             type="button"
             data-testid="shopping-cart-button"
           >
-            Comprar
-
+            Carrinho de compras
+          </button>
+          <button
+            type="button"
+            data-testid="product-detail-add-to-cart"
+            onClick={ this.addToCart }
+          >
+            Adicionar ao Carrinho
           </button>
         </div>
       );
