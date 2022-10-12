@@ -30,6 +30,12 @@ class SideBar extends React.Component {
             </NavLink>
           </div>
         ))}
+        <NavLink
+          to="/shoppingcart"
+          data-testid="shopping-cart-button"
+        >
+          Carrinho de Compras
+        </NavLink>
       </aside>
     );
   }
