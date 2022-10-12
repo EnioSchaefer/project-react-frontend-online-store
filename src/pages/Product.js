@@ -15,18 +15,26 @@ export default class Product extends Component {
     this.setState({ product: response });
   }
 
-  handleClick = () => {
-    const { history } = this.props;
-    history.push('/shoppingcart');
-  };
-
-  addToCart = () => {
-    const { match: { params: { id } } } = this.props;
+  addToCart = (item) => {
     const localData = JSON.parse(localStorage.getItem('products'));
     if (!localData) {
-      localStorage.setItem('products', JSON.stringify([id]));
+      const itemWithQuantity = {
+        ...item,
+        quantity: 1,
+      };
+      localStorage.setItem('products', JSON.stringify([itemWithQuantity]));
+    } else if (localData.find((obj) => obj.id === item.id)) {
+      const find = localData.find((obj) => obj.id === item.id);
+      const index = localData.indexOf(find);
+      find.quantity += 1;
+      localData[index] = find;
+      localStorage.setItem('products', JSON.stringify(localData));
     } else {
-      localStorage.setItem('products', JSON.stringify([...localData, id]));
+      const itemWithQuantity = {
+        ...item,
+        quantity: 1,
+      };
+      localStorage.setItem('products', JSON.stringify([...localData, itemWithQuantity]));
     }
   };
 
@@ -48,19 +56,11 @@ export default class Product extends Component {
             value={ product.id }
           >
             {`${product.price}`}
-
           </p>
-          <button
-            onClick={ this.handleClick }
-            type="button"
-            data-testid="shopping-cart-button"
-          >
-            Carrinho de compras
-          </button>
           <button
             type="button"
             data-testid="product-detail-add-to-cart"
-            onClick={ this.addToCart }
+            onClick={ () => this.addToCart(product) }
           >
             Adicionar ao Carrinho
           </button>
@@ -71,6 +71,5 @@ export default class Product extends Component {
 }
 
 Product.propTypes = {
-  history: PropTypes.shape.isRequired,
   match: PropTypes.shape.isRequired,
 };
