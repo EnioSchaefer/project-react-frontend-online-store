@@ -19,25 +19,19 @@ export default class Product extends Component {
     });
   }
 
-  // shouldComponentUpdate(prev) {
-  //   const { local } = this.state;
-  //   // if (local !== prev.state.local) return true;
-  // }
-
   handleChange = ({ target }) => {
     const { value, name } = target;
-    this.setState({ [name]: value });
+    this.setState({ [name]: value, invalid: false });
   };
 
   handleClick = (e) => {
     e.preventDefault();
     const { match: { params: { id } } } = this.props;
     const { email: email2, texto, avaliation } = this.state;
-    // const texto = document.querySelector('#msg').value;
-    // const avaliation = document.querySelector('input[name="avaliation"]:checked').value;
     const local = JSON.parse(localStorage.getItem(id));
     const regex = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/;
-    if (!regex.test(email2) && avaliation) {
+    console.log(avaliation);
+    if (!regex.test(email2) || !avaliation) {
       this.setState({ invalid: true });
     } else if (!local) {
       localStorage.setItem(id, JSON.stringify([{
@@ -45,6 +39,7 @@ export default class Product extends Component {
         text: texto,
         rating: avaliation,
       }]));
+      this.setState({ local: JSON.parse(localStorage.getItem(id)) });
       document.getElementById('form').reset();
     } else {
       localStorage.setItem(id, JSON.stringify([...local, {
@@ -52,6 +47,7 @@ export default class Product extends Component {
         text: texto,
         rating: avaliation,
       }]));
+      this.setState({ local: JSON.parse(localStorage.getItem(id)) });
       document.getElementById('form').reset();
     }
   };
@@ -111,41 +107,35 @@ export default class Product extends Component {
               <input
                 data-testid="product-detail-email"
                 name="email"
-                // onChange={ this.handleChange }
                 id="email"
               />
             </label>
             <div>
               <input
-                // onChange={ this.handleChange }
                 name="avaliation"
                 value="1"
                 data-testid="1-rating"
                 type="radio"
               />
               <input
-                // onChange={ this.handleChange }
                 name="avaliation"
                 value="2"
                 data-testid="2-rating"
                 type="radio"
               />
               <input
-                // onChange={ this.handleChange }
                 name="avaliation"
                 value="3"
                 data-testid="3-rating"
                 type="radio"
               />
               <input
-                // onChange={ this.handleChange }
                 name="avaliation"
                 value="4"
                 data-testid="4-rating"
                 type="radio"
               />
               <input
-                // onChange={ this.handleChange }
                 name="avaliation"
                 value="5"
                 data-testid="5-rating"
