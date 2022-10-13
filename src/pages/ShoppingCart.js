@@ -10,16 +10,40 @@ export default class ShoppingCart extends Component {
   }
 
   componentDidMount() {
-    const { cartObjects } = this.state;
     const localData = JSON.parse(localStorage.getItem('products'));
 
     if (localData) {
       this.setState(({
         cartObjects: localData,
       }));
-      console.log(cartObjects);
     }
   }
+
+  increaseItem = (itemsList, index) => {
+    itemsList[index].quantity += 1;
+    localStorage.setItem('products', JSON.stringify(itemsList));
+    this.setState(({
+      cartObjects: itemsList,
+    }));
+  };
+
+  decreaseItem = (itemsList, index) => {
+    if (itemsList[index].quantity > 1) {
+      itemsList[index].quantity -= 1;
+      localStorage.setItem('products', JSON.stringify(itemsList));
+      this.setState(({
+        cartObjects: itemsList,
+      }));
+    }
+  };
+
+  removeProduct = (itemsList, index) => {
+    const filteredList = itemsList.filter((item) => item !== itemsList[index]);
+    localStorage.setItem('products', JSON.stringify(filteredList));
+    this.setState(({
+      cartObjects: filteredList,
+    }));
+  };
 
   render() {
     const { cartObjects } = this.state;
@@ -29,13 +53,36 @@ export default class ShoppingCart extends Component {
     return (
       <>
         {cartObjects.map((obj, index) => (
-          <span key={ index }>
+          <div key={ index }>
             <img src={ obj.thumbnail } alt={ obj.title } />
             <p data-testid="shopping-cart-product-name">{obj.title}</p>
-            <p data-testid="shopping-cart-product-quantity">
+            <button
+              type="button"
+              data-testid="product-decrease-quantity"
+              onClick={ () => this.decreaseItem(cartObjects, index) }
+            >
+              -
+            </button>
+            <span data-testid="shopping-cart-product-quantity">
               {obj.quantity}
-            </p>
-          </span>
+            </span>
+            <button
+              type="button"
+              data-testid="product-increase-quantity"
+              onClick={ () => this.increaseItem(cartObjects, index) }
+            >
+              +
+            </button>
+            <br />
+            <br />
+            <button
+              type="button"
+              data-testid="remove-product"
+              onClick={ () => this.removeProduct(cartObjects, index) }
+            >
+              Remover Item
+            </button>
+          </div>
         ))}
       </>
     );
