@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 
 export default class ShoppingCart extends Component {
   constructor() {
@@ -84,6 +85,9 @@ export default class ShoppingCart extends Component {
             </button>
           </div>
         ))}
+        <NavLink to="/checkout" data-testid="checkout-products">
+          Finalizar Compra
+        </NavLink>
       </>
     );
   }

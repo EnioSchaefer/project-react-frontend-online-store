@@ -13,17 +13,8 @@ class Categories extends React.Component {
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const response = await getProductsFromCategoryAndQuery(id, null);
-    console.log(response);
     this.setState({ products: response.results });
   }
-
-  // shouldComponentUpdate(nextProps) {
-  //   const { location: { pathname } } = this.props;
-  //   let checkUpdate = true;
-  //   if (pathname !== nextProps.location.pathname) checkUpdate = true;
-  //   console.log(checkUpdate);
-  //   return checkUpdate;
-  // }
 
   addToCart = (item) => {
     const localData = JSON.parse(localStorage.getItem('products'));
