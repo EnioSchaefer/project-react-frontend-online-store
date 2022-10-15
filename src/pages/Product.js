@@ -78,8 +78,8 @@ export default class Product extends Component {
     const { product, invalid, local } = this.state;
     if (product) {
       return (
-        <>
-          <div>
+        <div className="product__classification">
+          <div className="product__item">
             <p data-testid="product-detail-name">{product.title}</p>
             <img
               data-testid="product-detail-image"
@@ -91,7 +91,7 @@ export default class Product extends Component {
               data-testid="product-detail-price"
               value={ product.id }
             >
-              {`${product.price}`}
+              {`R$ ${product.price}`}
             </p>
             <button
               type="button"
@@ -101,67 +101,75 @@ export default class Product extends Component {
               Adicionar ao Carrinho
             </button>
           </div>
-          <form onChange={ this.handleChange } id="form">
-            <label htmlFor="email">
-              <input
-                data-testid="product-detail-email"
-                name="email"
-                id="email"
-              />
-            </label>
-            <div>
-              <input
-                name="avaliation"
-                value="1"
-                data-testid="1-rating"
-                type="radio"
-              />
-              <input
-                name="avaliation"
-                value="2"
-                data-testid="2-rating"
-                type="radio"
-              />
-              <input
-                name="avaliation"
-                value="3"
-                data-testid="3-rating"
-                type="radio"
-              />
-              <input
-                name="avaliation"
-                value="4"
-                data-testid="4-rating"
-                type="radio"
-              />
-              <input
-                name="avaliation"
-                value="5"
-                data-testid="5-rating"
-                type="radio"
-              />
-            </div>
-            <label htmlFor="msg">
-              <textarea name="texto" data-testid="product-detail-evaluation" id="msg" />
-            </label>
-            <button
-              onClick={ this.handleClick }
-              data-testid="submit-review-btn"
-              type="submit"
-            >
-              Enviar
-            </button>
-            {invalid && <span data-testid="error-msg">Campos inválidos</span>}
-          </form>
-          {local && (
-            local.map((obj, i) => (
-              <div key={ i }>
-                <p data-testid="review-card-email">{obj.email}</p>
-                <p data-testid="review-card-rating">{obj.rating}</p>
-                <p data-testid="review-card-evaluation">{obj.text}</p>
+          <div className="classifications">
+            <form onChange={ this.handleChange } id="form">
+              <label htmlFor="email">
+                <input
+                  data-testid="product-detail-email"
+                  name="email"
+                  id="email"
+                  placeholder="Email"
+                />
+              </label>
+              <div className="option__avaliation">
+                <input
+                  name="avaliation"
+                  value="1"
+                  data-testid="1-rating"
+                  type="radio"
+                />
+                <input
+                  name="avaliation"
+                  value="2"
+                  data-testid="2-rating"
+                  type="radio"
+                />
+                <input
+                  name="avaliation"
+                  value="3"
+                  data-testid="3-rating"
+                  type="radio"
+                />
+                <input
+                  name="avaliation"
+                  value="4"
+                  data-testid="4-rating"
+                  type="radio"
+                />
+                <input
+                  name="avaliation"
+                  value="5"
+                  data-testid="5-rating"
+                  type="radio"
+                />
               </div>
-            )))}
-        </>
+              <label htmlFor="msg">
+                <textarea
+                  placeholder="Detalhes da avalização do produto"
+                  name="texto"
+                  data-testid="product-detail-evaluation"
+                  id="msg"
+                />
+              </label>
+              <button
+                onClick={ this.handleClick }
+                data-testid="submit-review-btn"
+                type="submit"
+              >
+                Enviar
+              </button>
+              {invalid && <span data-testid="error-msg">Campos inválidos</span>}
+            </form>
+            {local && (
+              local.map((obj, i) => (
+                <div key={ i }>
+                  <p data-testid="review-card-email">{obj.email}</p>
+                  <p data-testid="review-card-rating">{obj.rating}</p>
+                  <p data-testid="review-card-evaluation">{obj.text}</p>
+                </div>
+              )))}
+          </div>
+        </div>
       );
     }
   }

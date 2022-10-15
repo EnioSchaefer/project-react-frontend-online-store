@@ -1,5 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import logoPath from '../imgs/logo.png';
+import imgPath from '../imgs/Vector.png';
 import { getCategories } from '../services/api';
 
 class SideBar extends React.Component {
@@ -18,25 +20,34 @@ class SideBar extends React.Component {
   render() {
     const { categoriesList } = this.state;
     return (
-      <aside>
-        { categoriesList.map((item, index) => (
-          <div key={ index }>
-            <NavLink
-              data-testid="category"
-              to={ `/categories/${item.id}` }
-              value={ item.id }
-            >
-              {item.name}
-            </NavLink>
-          </div>
-        ))}
-        <NavLink
-          to="/shoppingcart"
-          data-testid="shopping-cart-button"
-        >
-          Carrinho de Compras
-        </NavLink>
-      </aside>
+      <>
+        <header>
+          <div />
+          <NavLink to="/">
+            <img alt="logo loja" src={ logoPath } />
+          </NavLink>
+          <NavLink
+            to="/shoppingcart"
+            data-testid="shopping-cart-button"
+          >
+            <span>Carrinho de Compras</span>
+            <img alt="shoppingCartIcon" src={ imgPath } />
+          </NavLink>
+        </header>
+        <aside>
+          { categoriesList.map((item, index) => (
+            <div key={ index }>
+              <NavLink
+                data-testid="category"
+                to={ `/categories/${item.id}` }
+                value={ item.id }
+              >
+                {item.name}
+              </NavLink>
+            </div>
+          ))}
+        </aside>
+      </>
     );
   }
 }

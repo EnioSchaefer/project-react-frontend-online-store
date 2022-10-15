@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
-import Home from './pages/Home';
 import SideBar from './components/SideBar';
-import ShoppingCart from './pages/ShoppingCart';
 import Categories from './pages/Categories';
-import Product from './pages/Product';
 import Checkout from './pages/Checkout';
+import Home from './pages/Home';
+import Product from './pages/Product';
+import ShoppingCart from './pages/ShoppingCart';
 
 function App() {
   return (

@@ -13,7 +13,16 @@ class Categories extends React.Component {
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const response = await getProductsFromCategoryAndQuery(id, null);
-    this.setState({ products: response.results });
+    this.setState({ products: response.results, idPath: id });
+  }
+
+  async componentDidUpdate() {
+    const { match: { params: { id } } } = this.props;
+    const { idPath } = this.state;
+    if (idPath !== id) {
+      const response = await getProductsFromCategoryAndQuery(id, null);
+      this.setState({ products: response.results, idPath: id });
+    }
   }
 
   addToCart = (item) => {
@@ -50,15 +59,16 @@ class Categories extends React.Component {
     const { products } = this.state;
 
     return (
-      <>
+      <div className="products__list">
         {products.map((obj, index) => (
           <div
+            className="product__item"
             data-testid="product"
             key={ index }
           >
             <p className={ obj.id }>{obj.title}</p>
             <img value={ obj.id } src={ obj.thumbnail } alt={ obj.title } />
-            <p value={ obj.id }>{`${obj.price}`}</p>
+            <p value={ obj.id }>{`R$ ${obj.price}`}</p>
             <button
               type="button"
               data-testid="product-add-to-cart"
@@ -76,7 +86,7 @@ class Categories extends React.Component {
             </button>
           </div>
         ))}
-      </>
+      </div>
     );
   }
 }

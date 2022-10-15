@@ -76,25 +76,27 @@ export default class Home extends Component {
   render() {
     const { searchInput, searchResult, foundResult } = this.state;
     return (
-      <>
-        <label htmlFor="searchInput">
-          <input
-            type="text"
-            id="searchInput"
-            name="searchInput"
-            value={ searchInput }
-            onChange={ this.handleChange }
-            data-testid="query-input"
-          />
-        </label>
+      <div className="search__bar">
+        <div className="searchBar">
+          <label htmlFor="searchInput">
+            <input
+              type="text"
+              id="searchInput"
+              name="searchInput"
+              value={ searchInput }
+              onChange={ this.handleChange }
+              data-testid="query-input"
+            />
+          </label>
 
-        <button
-          type="button"
-          onClick={ this.buttonSearch }
-          data-testid="query-button"
-        >
-          Pesquisar
-        </button>
+          <button
+            type="button"
+            onClick={ this.buttonSearch }
+            data-testid="query-button"
+          >
+            Pesquisar
+          </button>
+        </div>
 
         {searchInput === ''
           && (
@@ -104,9 +106,9 @@ export default class Home extends Component {
           )}
 
         {foundResult && <p>Nenhum produto foi encontrado</p>}
-        <div>
+        <div className="products__list">
           {searchResult.map((obj, index) => (
-            <span key={ index } data-testid="product">
+            <span className="product__item" key={ index } data-testid="product">
               <p>{obj.title}</p>
               <img src={ obj.thumbnail } alt={ obj.title } />
               <p>{ `${obj.price}${obj.currency}` }</p>
@@ -128,7 +130,7 @@ export default class Home extends Component {
             </span>
           ))}
         </div>
-      </>
+      </div>
     );
   }
 }
